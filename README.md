@@ -4,19 +4,19 @@
 
 Ejecuta el siguiente comando de git para clonar este repositorio:
 
-`/** fill me */`
+git clone https://github.com/omiras/CodeQuestAPI-examen-mf0493_3.git
 
 Luego instala las dependencias con el siguiente comando de npm:
 
-`/** fill me */`
+npm i
 
 Para levantar el servidor ejecuta el siguiente comando de npm:
 
-`/** fill me */`
+npm run dev
 
 ## Setup de la base de datos
 
-Ejecuta esta sentencia de MongoDB utilizando el plugin de Visual Studio para llenar la base de datos preguntas tipo test. Hazlo con TU conexíon de MongoDB Atlas: 
+Ejecuta esta sentencia de MongoDB utilizando el plugin de Visual Studio para llenar la base de datos preguntas tipo test. Hazlo con TU conexíon de MongoDB Atlas:
 
 ```
 /* global use, db */
