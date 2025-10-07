@@ -1,7 +1,10 @@
-const xlsx = require("xlsx");
-const fs = require("fs");
-const path = require("path");
-const { generateQuestions, getRandomQuestionsDB } = require('../services/question.services');
+const xlsx = require('xlsx');
+const fs = require('fs');
+const path = require('path');
+const {
+	generateQuestions,
+	getRandomQuestionsDB
+} = require('../services/question.services');
 
 /**
  * Get random questions from the service.
@@ -23,7 +26,7 @@ const { generateQuestions, getRandomQuestionsDB } = require('../services/questio
  */
 const getRandomQuestions = async (req, res) => {
 	try {
-		let { amount } = req.query;
+		let { amount, difficulty } = req.query;
 		amount = parseInt(amount, 10);
 
 		//validation of amount
@@ -33,16 +36,20 @@ const getRandomQuestions = async (req, res) => {
 			amount = 30;
 		}
 
-		const randomQuestion = await getRandomQuestionsDB(amount);
-		
+		const filter = {};
+		if (difficulty) {
+			filter.difficulty = difficulty;
+		}
+
+		const randomQuestion = await getRandomQuestionsDB(amount, filter);
 
 		res.status(200).json({
-			message: "Random questions delivered successfully",
-			results: randomQuestion,
+			message: 'Random questions delivered successfully',
+			results: randomQuestion
 		});
 	} catch (error) {
 		res.status(500).json({
-			message: "Error fetching random questions",
+			message: 'Error fetching random questions'
 		});
 	}
 };
@@ -50,7 +57,7 @@ const getRandomQuestions = async (req, res) => {
 // Controller function to handle requests for generating AI-based questions
 const getAiQuestions = async (req, res) => {
 	// Get the topic from the query parameters, or set a default value
-	const topic = req.query.topic || "Frontend and Backend programming";
+	const topic = req.query.topic || 'Frontend and Backend programming';
 	// Parse the "amount" query parameter, setting a default of 1 and ensuring it's between 1 and 10
 	const amount = Math.min(Math.max(parseInt(req.query.amount) || 1, 1), 10);
 	try {
@@ -58,20 +65,19 @@ const getAiQuestions = async (req, res) => {
 		const questions = await generateQuestions(topic, amount);
 		// Send a successful response with a message and the generated questions
 		return res.status(200).json({
-			message: "Random questions delivered successfully.",
-			results: questions,
+			message: 'Random questions delivered successfully.',
+			results: questions
 		});
 	} catch (error) {
 		// Log error details to the console for debugging
 		console.error(
-			"Error generating the questions:",
-			error.response
-				? error.response.data
-				: error.message
+			'Error generating the questions:',
+			error.response ? error.response.data : error.message
 		);
 		// Send a 400 error response with a custom error message if generation fails
 		return res.status(400).json({
-			message: error.message || "An error occurred while generating the questions.",
+			message:
+				error.message || 'An error occurred while generating the questions.'
 		});
 	}
 };
